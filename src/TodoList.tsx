@@ -6,14 +6,20 @@ interface Props {
 }
 
 function TodoList({ todos }: Props) {
+  if (!todos.length) {
+    return (
+      <div>You have no Todos.</div>
+    );
+  }
+
   return (
-    <div 
+    <div
       style={{
         display: 'flex',
         flexDirection: 'column',
       }}
     >
-      {todos.map((todo, index) => <TodoItem key={index} task={todo.task}/>)}
+      {todos.map((todo, index) => <TodoItem key={index} task={todo.task} />)}
     </div>
   );
 }
