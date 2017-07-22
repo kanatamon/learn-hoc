@@ -19,4 +19,12 @@ describe('TodoList Component', () => {
     );
     expect(todoList.text()).toBe('You have no Todos.');
   });
+
+  test('should render a message indicating loading state when the props.isLoading is true', () => {
+    const todos = [{ task: 'Clean up room' }];
+    const todoList = shallow(
+      <TodoList todos={todos} isLoading={true} />
+    );
+    expect(todoList.text()).toBe('Loading todos ...');
+  });
 });

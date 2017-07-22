@@ -3,9 +3,16 @@ import TodoItem from './TodoItem';
 
 interface Props {
   todos: Array<{ task: string }>;
+  isLoading?: boolean;
 }
 
-function TodoList({ todos }: Props) {
+function TodoList({ todos, isLoading = false }: Props) {
+  if (isLoading) {
+    return (
+      <div>Loading todos ...</div>
+    );
+  }
+
   if (!todos.length) {
     return (
       <div>You have no Todos.</div>
