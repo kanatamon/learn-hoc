@@ -2,12 +2,12 @@ import * as React from 'react';
 import { compose } from 'recompose';
 import TodoItem from './TodoItem';
 
-interface Props {
+interface TodoListProps {
   todos: Array<{ task: string }>;
   isLoading?: boolean;
 }
 
-const TodoList: React.StatelessComponent<Props> = ({ todos, isLoading }: Props) => {
+const TodoList: React.StatelessComponent<TodoListProps> = ({ todos, isLoading }: TodoListProps) => {
   return (
     <div
       style={{
@@ -20,33 +20,22 @@ const TodoList: React.StatelessComponent<Props> = ({ todos, isLoading }: Props) 
   );
 };
 
-function withEmpty(Component: React.StatelessComponent<Props>) {
-  return (props: Props) => {
-    if (!props.todos.length) {
-      return (
-        <div>You have no Todos.</div>
-      );
-    }
-
-    return Component(props);
-  };
+function withCondition<P>(conditionFunction: Function, EitherComponent: Function) {
+  return (Component: Function) => (props: P) => 
+    conditionFunction(props)
+    ? EitherComponent(props)
+    : Component(props);
 }
 
-function withLoading(Component: React.StatelessComponent<Props>) {
-  return (props: Props) => {
-    if (props.isLoading) {
-      return (
-        <div>Loading todos ...</div>
-      );
-    }
+const EmptyTodosComponent = () => <div>You have no Todos.</div>;
+const LoadingComponent = () => <div>Loading todos ...</div>;
 
-    return Component(props);
-  };
-}
+const isEmptyTodos = ({ todos }: TodoListProps) => !todos.length;
+const isLoadingTodos = ({ isLoading = false }: TodoListProps) => isLoading;
 
 const withConditionalRendering = compose(
-  withLoading,
-  withEmpty,
+  withCondition<TodoListProps>(isEmptyTodos, EmptyTodosComponent),
+  withCondition<TodoListProps>(isLoadingTodos, LoadingComponent),
 );
 
 export default withConditionalRendering(TodoList);
