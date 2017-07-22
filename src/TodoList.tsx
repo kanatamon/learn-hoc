@@ -6,16 +6,10 @@ interface Props {
   isLoading?: boolean;
 }
 
-function TodoList({ todos, isLoading = false }: Props) {
+const TodoList: React.StatelessComponent<Props> = ({ todos, isLoading }: Props) => {
   if (isLoading) {
     return (
       <div>Loading todos ...</div>
-    );
-  }
-
-  if (!todos.length) {
-    return (
-      <div>You have no Todos.</div>
     );
   }
 
@@ -29,6 +23,18 @@ function TodoList({ todos, isLoading = false }: Props) {
       {todos.map((todo, index) => <TodoItem key={index} task={todo.task} />)}
     </div>
   );
+};
+
+function withEmpty(Component: React.StatelessComponent<Props>) {
+  return (props: Props) => {
+    if (!props.todos.length) {
+      return (
+        <div>You have no Todos.</div>
+      );
+    }
+
+    return Component(props);
+  };
 }
 
-export default TodoList;
+export default withEmpty(TodoList);
