@@ -7,12 +7,6 @@ interface Props {
 }
 
 const TodoList: React.StatelessComponent<Props> = ({ todos, isLoading }: Props) => {
-  if (isLoading) {
-    return (
-      <div>Loading todos ...</div>
-    );
-  }
-
   return (
     <div
       style={{
@@ -37,4 +31,16 @@ function withEmpty(Component: React.StatelessComponent<Props>) {
   };
 }
 
-export default withEmpty(TodoList);
+function withLoading(Component: React.StatelessComponent<Props>) {
+  return (props: Props) => {
+    if (props.isLoading) {
+      return (
+        <div>Loading todos ...</div>
+      );
+    }
+
+    return Component(props);
+  };
+}
+
+export default withLoading(withEmpty(TodoList));
