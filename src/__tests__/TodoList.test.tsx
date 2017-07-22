@@ -12,7 +12,7 @@ describe('TodoList Component', () => {
     expect(todoList.find(TodoItem).length).toBe(todos.length);
   });
 
-  test('should render a Message when the length of the given array is 0', () => {
+  test('should render a message indicating empty todos when the length of the given todos is 0', () => {
     const todos: Array<{ task: string }> = [];
     const todoList = shallow(
       <TodoList todos={todos} />
