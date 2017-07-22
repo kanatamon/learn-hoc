@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { compose } from 'recompose';
 import TodoItem from './TodoItem';
 
 interface Props {
@@ -43,4 +44,9 @@ function withLoading(Component: React.StatelessComponent<Props>) {
   };
 }
 
-export default withLoading(withEmpty(TodoList));
+const withConditionalRendering = compose(
+  withLoading,
+  withEmpty,
+);
+
+export default withConditionalRendering(TodoList);
